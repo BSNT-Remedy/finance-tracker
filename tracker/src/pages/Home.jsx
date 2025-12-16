@@ -7,7 +7,7 @@ function Home(){
         category, setCategory,
         amount, setAmount,
         spent_at, setSpent_at,
-        addExpense,
+        addExpense, deleteExpense,
     } = useExpense();
     
     
@@ -46,6 +46,7 @@ function Home(){
         {expenses.map(exp => (
             <div key={exp.id}>
                 <h1>{exp.name} - {exp.amount}</h1>
+                <button onClick={() => deleteExpense(exp.id)}>delete</button>
             </div>
         ))}
     </div>

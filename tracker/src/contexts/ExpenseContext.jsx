@@ -44,13 +44,29 @@ export const ExpenseProvider = ({children}) => {
         getExpenses();
     }
 
+    const deleteExpense = async (taskId) => {
+        try{
+            const res = await fetch(`http://127.0.0.1:8000/api/delete/${taskId}/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+
+        } catch (error) {
+            console.log(error);
+        }
+
+        getExpenses();
+    }
+
     const value = {
         expenses, setExpenses,
         name, setName,
         category, setCategory,
         amount, setAmount,
         spent_at, setSpent_at,
-        addExpense,
+        addExpense, deleteExpense,
     }
 
     return <ExpenseContext.Provider value={value}>

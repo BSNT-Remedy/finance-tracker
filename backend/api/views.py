@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -45,3 +45,11 @@ def newExpense(request):
 
         return JsonResponse({"message": "Expense Created"}, status=201)
     return JsonResponse({"error": "Invalid"}, status=401)
+
+@csrf_exempt
+def deleteExpense(request, pk):
+    if request.method == "POST":
+        expense = get_object_or_404(Expense, pk=pk)
+        expense.delete()
+        return JsonResponse({"message": "Expense Deleted"})
+    return JsonResponse({"error": "Invalid request"}, status=400)
