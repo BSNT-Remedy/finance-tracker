@@ -8,4 +8,5 @@ urlpatterns = [
     path('', views.ExpenseList.as_view(), name='home'),
     path('new/', views.newExpense, name='new'),
     path('delete/<int:pk>/', views.deleteExpense, name='delete'),
+    path('edit/<int:pk>/', views.editExpense, name='edit'),
 ]

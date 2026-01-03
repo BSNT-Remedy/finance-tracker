@@ -44,6 +44,26 @@ export const ExpenseProvider = ({children}) => {
         getExpenses();
     }
 
+    const editExpense = async (taskId, payload) => {
+        try {
+            const res = await fetch(`http://127.0.0.1:8000/api/edit/${taskId}/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload)
+            });
+            console.log(res)
+            if(res.ok) {
+                console.log("Expense updated")
+            } else console.log("Failed to edit the expense");
+        } catch (error) {
+            console.error(error);
+        }
+
+        getExpenses();
+    }
+
     const deleteExpense = async (taskId) => {
         try{
             const res = await fetch(`http://127.0.0.1:8000/api/delete/${taskId}/`, {
@@ -66,7 +86,7 @@ export const ExpenseProvider = ({children}) => {
         category, setCategory,
         amount, setAmount,
         spent_at, setSpent_at,
-        addExpense, deleteExpense,
+        addExpense, deleteExpense, editExpense,
     }
 
     return <ExpenseContext.Provider value={value}>
