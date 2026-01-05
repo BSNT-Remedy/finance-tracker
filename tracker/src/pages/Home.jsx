@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useExpense } from "../contexts/ExpenseContext";
+import ExpenseFormModal from "../modals/ExpenseFormModal";
 function Home(){
-    const [isEditing, setIsEditing] = useState(false);
+    const [addExpenseModal, setAddExpenseModal] = useState(false);
     const [editingId, setEditingId] = useState();
     const [editingName, setEditingName] = useState("");
     const [editingAmount, setEditingAmount] = useState(null);
@@ -37,37 +38,11 @@ function Home(){
     }
     
     return <div>
-        <div className="expense-form">
-            <form>
-                <input 
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="name" 
-                />
-                <input 
-                    type="text"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    placeholder="category" 
-                />
-                <input 
-                    type="number"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    placeholder="amount" 
-                />
-                <input 
-                    type="datetime-local"
-                    value={spent_at}
-                    onChange={(e) => setSpent_at(e.target.value)}
-                    placeholder="date spent" 
-                />
-                <button type="button" onClick={addExpense}>
-                    Add
-                </button>
-            </form>
-        </div>
+
+        {addExpenseModal && <ExpenseFormModal onClose={() => setAddExpenseModal(false)}/>}
+
+        <button className="add-expense-btn" onClick={() => setAddExpenseModal(true)}>+ New Expense</button>
+
         {expenses.map(exp => (
             <div key={exp.id}>
                 {exp.id === editingId ? 

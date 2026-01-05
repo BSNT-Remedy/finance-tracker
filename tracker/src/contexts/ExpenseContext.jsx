@@ -23,8 +23,7 @@ export const ExpenseProvider = ({children}) => {
         getExpenses()
     }, []);
 
-    const addExpense = async (e) => {
-        e.preventDefault()
+    const addExpense = async () => {
 
         try{
             const res = await fetch('http://127.0.0.1:8000/api/new/', {
