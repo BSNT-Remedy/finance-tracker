@@ -1,4 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { ACCESS_TOKEN } from "../constants";
+import api from "../api";
 
 const ExpenseContext = createContext()
 
@@ -13,10 +15,14 @@ export const ExpenseProvider = ({children}) => {
     
 
     const getExpenses = async () => {
-        const res = await fetch('http://127.0.0.1:8000/api/')
-        const data = await res.json();
-        console.log(data);
-        setExpenses(data);
+        try {
+            const res = await api.get("/api/expenses/");
+            console.log("res.data to: ", res.data);
+            setExpenses(res.data);
+        } catch (error) {
+            console.log(error);
+            setExpenses([]);
+        }
     }
 
     useEffect(() => {
@@ -24,13 +30,10 @@ export const ExpenseProvider = ({children}) => {
     }, []);
 
     const addExpense = async () => {
-
         try{
-            const res = await fetch('http://127.0.0.1:8000/api/new/', {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({name, category, amount, spent_at})
-            });
+            const res = await api.post('/api/expenses/', {name, category, amount, spent_at});
+            if(res.status === 201) alert("Note created!");
+            else alert("Failed to make note");
         } catch (error) {
             console.log(error);
         }
@@ -44,16 +47,11 @@ export const ExpenseProvider = ({children}) => {
     }
 
     const editExpense = async (taskId, payload) => {
+        console.log("payload: ", payload);
         try {
-            const res = await fetch(`http://127.0.0.1:8000/api/edit/${taskId}/`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload)
-            });
+            const res = await api.put(`/api/edit/${taskId}/`, payload);
             console.log(res)
-            if(res.ok) {
+            if(res.status === 200) {
                 console.log("Expense updated")
             } else console.log("Failed to edit the expense");
         } catch (error) {
@@ -65,12 +63,10 @@ export const ExpenseProvider = ({children}) => {
 
     const deleteExpense = async (taskId) => {
         try{
-            const res = await fetch(`http://127.0.0.1:8000/api/delete/${taskId}/`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            })
+            const res = await api.delete(`/api/delete/${taskId}/`)
+
+            if (res.status === 204) alert("Expense deletetd");
+            else alert("Failed to delete expense.")
 
         } catch (error) {
             console.log(error);

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useExpense } from "../contexts/ExpenseContext";
 import ExpenseFormModal from "../modals/ExpenseFormModal";
+
 function Home(){
     const [addExpenseModal, setAddExpenseModal] = useState(false);
     const [editingId, setEditingId] = useState();
@@ -43,7 +44,7 @@ function Home(){
 
         <button className="add-expense-btn" onClick={() => setAddExpenseModal(true)}>+ New Expense</button>
 
-        {expenses.map(exp => (
+        {...expenses.map(exp => (
             <div key={exp.id}>
                 {exp.id === editingId ? 
                     <div>

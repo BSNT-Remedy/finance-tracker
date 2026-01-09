@@ -5,8 +5,7 @@ from . import views
 app_name = 'api'
 
 urlpatterns = [
-    path('', views.ExpenseList.as_view(), name='home'),
-    path('new/', views.newExpense, name='new'),
-    path('delete/<int:pk>/', views.deleteExpense, name='delete'),
-    path('edit/<int:pk>/', views.editExpense, name='edit'),
+    path('expenses/', views.ExpenseListCreate.as_view(), name='home'),
+    path('delete/<int:pk>/', views.ExpenseDelete.as_view(), name='delete'),
+    path('edit/<int:pk>/', views.ExpenseEdit.as_view(), name='edit'),
 ]

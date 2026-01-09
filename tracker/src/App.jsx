@@ -1,13 +1,47 @@
 import Home from "./pages/Home"
 import { ExpenseProvider } from "./contexts/ExpenseContext"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import Login from "./pages/Login"
+import Register from "./pages/Register"
+import NotFound from "./pages/NotFound"
+import ProtectedRoute from "./components/ProtectedRoute"
+
+function Logout() {
+  localStorage.clear();
+  return <Navigate to="/login" />
+}
+
+function RegisterAndLogout() {
+  localStorage.clear();
+  return <Register />
+}
+
+function HomeWithExpenses() {
+  return (
+    <ExpenseProvider>
+      <Home/>
+    </ExpenseProvider>
+  )
+}
 
 function App() {
   return (
-    <>
-      <ExpenseProvider>
-        <Home/>
-      </ExpenseProvider>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route 
+          path="/"
+          element={
+            <ProtectedRoute>
+              <HomeWithExpenses/>
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<RegisterAndLogout />} />
+        <Route path="/logout" element={<Logout />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

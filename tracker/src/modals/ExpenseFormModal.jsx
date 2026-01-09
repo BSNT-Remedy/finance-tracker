@@ -24,12 +24,11 @@ function ExpenseFormModal({onClose}) {
                     onChange={(e) => setName(e.target.value)}
                     placeholder="name" 
                 />
-                <input 
-                    type="text"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    placeholder="category" 
-                />
+                <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                    <option value="" disabled>choose category</option>
+                    <option value="1">Rent</option>
+                    <option value="2">Food</option>
+                </select>
                 <input 
                     type="number"
                     value={amount}
